@@ -37,7 +37,7 @@ def run():
             {
                 "cardId": unique_id,
                 "card": {
-                    "header": {"title": f"{title}",
+                    "header": {"title": f"{title}"},
                     "sections": [
                         {
                             "header": "Commit Message",
