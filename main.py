@@ -2,7 +2,6 @@ import json
 import os
 import uuid
 
-from github import Github
 from httplib2 import Http
 
 
@@ -18,48 +17,27 @@ def run():
 
     body = ""
 
+    if len(commits) == 1:
+        title = f"{name} pushed a new commit"
+    else:
+        title = f"{name} pushed {len(commits)} new commits"
+
     for commit in commits:
         body += f"Commit {commit['id'][-7:]} - {commit['message']} \n"
+
+    commit_url = event_data.get("head_commit", {}).get("url")
+    repo_url = commit_url.split("commit")[0]
 
     # {'author': {'email': '105678604+ZacAtPeak@users.noreply.github.com', 'name': 'ZacAtPeak', 'username': 'ZacAtPeak'}, 'committer': {'email': '105678604+ZacAtPeak@users.noreply.github.com', 'name': 'ZacAtPeak', 'username': 'ZacAtPeak'}, 'distinct': True, 'id': '13de7ced3f61f29e7bc5206db77d58459dff9a45', 'message': 'Update notify-chat-test copy.yml', 'timestamp': '2026-01-29T13:27:14-07:00', 'tree_id': '59c54477306f61cc5224e6d669a46be1bf429d9d', 'url': 'https://github.com/gitglacier/conversion-scripts/commit/13de7ced3f61f29e7bc5206db77d58459dff9a45'}
 
     unique_id = str(uuid.uuid4())
-
-    # author = push_details["head_commit"]["committer"]["name"]
-    # added_files = []
-    # removed_files = []
-    # updated_files = []
-    # commit_messages = []
-
-    # for commit in push_details["commits"]:
-    #     added_files += commit["added"]
-    #     updated_files += commit["modified"]
-    #     removed_files += commit["removed"]
-    #     commit_messages += f"Commit {commit['id']} - {commit['message']} \n"
-
-    # added_files = set(added_files)
-    # removed_files = set(removed_files)
-    # updated_files = set(updated_files)
-    # commit_messages = set(commit_messages)
-
-    # body = ""
-
-    # if added_files:
-    #     body += "\n" + f"{added_files}"
-    # if updated_files:
-    #     body += "\n" + f"{updated_files}"
-    # if removed_files:
-    #     body += "\n" + f"{removed_files}"
-
-    # if commit_messages:
-    #     body += "\n" + f"{commit_messages}"
 
     cardV2 = {
         "cardsV2": [
             {
                 "cardId": unique_id,
                 "card": {
-                    "header": {"title": f"{'Zac'} pushed {'6'} new commits"},
+                    "header": {"title": f"{name} pushed {len(commits)} new commits"},
                     "sections": [
                         {
                             "header": "Commit Message",
@@ -80,7 +58,7 @@ def run():
                                                     "materialIcon": {"name": "search"}
                                                 },
                                                 "onClick": {
-                                                    "openLink": {"url": f"{'repo'}"}
+                                                    "openLink": {"url": f"{commit_url}"}
                                                 },
                                             },
                                             {
@@ -92,7 +70,7 @@ def run():
                                                 },
                                                 "onClick": {
                                                     "openLink": {
-                                                        "url": f"https://zaclovespenguins.github.io/google-chat-notification/?repo={'REPO'}"
+                                                        "url": f"https://zaclovespenguins.github.io/google-chat-notification/?repo={repo_url}"
                                                     }
                                                 },
                                             },
@@ -124,3 +102,4 @@ def run():
 
 if __name__ == "__main__":
     run()
+    # run("https://chat.googleapis.com/v1/spaces/AAQAcy2U53g/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=4Ft202foaB4qk-eCPBKhsCEVFU7iGuSp1jyNdT8Pk1U", push_details, "https://github.com/Zaclovespenguins/google-chat-notification/")
