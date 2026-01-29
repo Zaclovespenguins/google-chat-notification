@@ -35,6 +35,7 @@ def run(webhook_url, push_details, updated_files, repo_url, commit_url, who_comm
     if commit_messages:
         body += "\n" + f"{commit_messages}"
 
+    print(body)
 
     cardV2 = {
       "cardsV2": [
