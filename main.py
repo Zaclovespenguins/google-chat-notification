@@ -17,19 +17,18 @@ def run():
 
     body = ""
 
+    # Creating body based on number of commits
     if len(commits) == 1:
         title = f"{name} pushed a new commit"
     else:
         title = f"{name} pushed {len(commits)} new commits"
 
     for commit in commits:
-        body += f"Commit {commit['id'][-7:]} - {commit['message']} \n"
+        body += f"Commit [{commit['id'][-7:]}]({commit_url}) - {commit['message']} \n"
 
     commit_url = event_data.get("head_commit", {}).get("url")
     repo_url = commit_url.split("commit")[0]
-
-    # {'author': {'email': '105678604+ZacAtPeak@users.noreply.github.com', 'name': 'ZacAtPeak', 'username': 'ZacAtPeak'}, 'committer': {'email': '105678604+ZacAtPeak@users.noreply.github.com', 'name': 'ZacAtPeak', 'username': 'ZacAtPeak'}, 'distinct': True, 'id': '13de7ced3f61f29e7bc5206db77d58459dff9a45', 'message': 'Update notify-chat-test copy.yml', 'timestamp': '2026-01-29T13:27:14-07:00', 'tree_id': '59c54477306f61cc5224e6d669a46be1bf429d9d', 'url': 'https://github.com/gitglacier/conversion-scripts/commit/13de7ced3f61f29e7bc5206db77d58459dff9a45'}
-
+    
     unique_id = str(uuid.uuid4())
 
     cardV2 = {
