@@ -5,6 +5,22 @@ import uuid
 from github import Github
 from httplib2 import Http
 
+def get_changed_files():
+    # Load the event data
+    event_path = os.getenv('GITHUB_EVENT_PATH')
+    with open(event_path, 'r') as f:
+        event_data = json.load(f)
+
+    # A set automatically handles duplicates (e.g., if a file was modified twice)
+    changed_files = set()
+
+    # Iterate through every commit in the push
+    for commit in event_data.get('commits', []):
+        changed_files.update(commit.get('added', []))
+        changed_files.update(commit.get('removed', []))
+        changed_files.update(commit.get('modified', []))
+
+    return list(changed_files)
 
 def run():
     webhook_url = os.getenv("INPUT_WEBHOOK_URL")
