@@ -28,7 +28,7 @@ def run():
         """
 
     for commit in commits:
-        body += f"""Commit [{commit['id'][-7:]}]({commit['url']}) - {commit['message']}
+        body += f"""Commit {commit['id'][-7:]} - {commit['message']}
         
         """
 
@@ -52,7 +52,6 @@ def run():
                                     "textParagraph": {
                                         "text": f"{body}",
                                         "maxLines": 2,
-                                        "textSyntax": "MARKDOWN"
                                     }
                                 },
                                 {
