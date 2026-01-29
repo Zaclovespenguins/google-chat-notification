@@ -35,15 +35,17 @@ def run():
     event_path = os.getenv("GITHUB_EVENT_PATH")
     with open(event_path, "r") as f:
         event_data = json.load(f)
-        print(event_data.get("push", []))
 
     # 2. Extract push-specific information
     # These fields are standard in the 'push' event payload
     pusher_name = event_data.get("pusher", {}).get("name")
     ref = event_data.get("ref")  # e.g., 'refs/heads/main'
+    commits = event_data.get("commits", {})
     head_commit = event_data.get("head_commit", {})
     message = head_commit.get("message")
-    
+    message = head_commit.get("message")
+
+    print(commits)
     # print(pusher_name)
     # print(ref)
     # print(head_commit)
