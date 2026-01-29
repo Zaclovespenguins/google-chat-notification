@@ -23,6 +23,8 @@ def run(webhook_url, push_details, updated_files, repo_url, commit_url, who_comm
     updated_files = set(updated_files)
     commit_messages = set(commit_messages)
 
+    print("TEST")
+
     body = ""
 
     if added_files:
