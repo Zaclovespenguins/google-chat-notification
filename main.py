@@ -19,12 +19,12 @@ def run():
 
     # Creating body based on number of commits
     if len(commits) == 1:
-        title = f"{name} pushed a new commit \n"
+        title = f"{name} pushed a new commit"
     else:
-        title = f"{name} pushed {len(commits)} new commits \n"
+        title = f"{name} pushed {len(commits)} new commits"
 
     for commit in commits:
-        body += f"Commit {commit['id'][-7:]} - {commit['message']}"
+        body += f"Commit {commit['id'][-7:]} - {commit['message']} \n"
 
     commit_url = event_data.get("head_commit", {}).get("url")
     repo_url = commit_url.split("commit")[0]
