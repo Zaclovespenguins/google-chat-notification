@@ -3,7 +3,11 @@ import os
 from httplib2 import Http
 import uuid
 
-def run(webhook_url, push_details, updated_files, repo_url, commit_url, who_commit):
+def run():
+    webhook_url = os.getenv("INPUT_WEBHOOK_URL")
+    push_details = os.getenv("INPUT_PUSH_DETAILS")
+    repo_url = os.getenv("INPUT_REPO_URL")
+    
     unique_id = str(uuid.uuid4())
 
     author = push_details['head_commit']['committer']['name']
