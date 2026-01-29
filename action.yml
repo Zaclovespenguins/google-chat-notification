@@ -3,8 +3,10 @@ description: "Sends a notification to a Google Chat room"
 inputs:
   webhook_url:
     description: "The webhook for your Google Chat Space"
+    required: true
   push_details:
     description: "The commit github event"
+    required: true
   repo_url:
     description: "The URL of the repository"
     required: true
