@@ -1,6 +1,6 @@
+import json
 import os
 import uuid
-from json import dumps
 
 from github import Github
 from httplib2 import Http
@@ -16,62 +16,59 @@ def run():
     # repo_name = os.getenv("GITHUB_REPOSITORY")
     # repo = g.get_repo(repo_name)
 
-    event_path = os.getenv('GITHUB_EVENT_PATH')
-        with open(event_path, 'r') as f:
-            event_data = json.load(f)
+    event_path = os.getenv("GITHUB_EVENT_PATH")
+    with open(event_path, "r") as f:
+        event_data = json.load(f)
 
-        # 2. Extract push-specific information
-        # These fields are standard in the 'push' event payload
-        pusher_name = event_data.get('pusher', {}).get('name')
-        ref = event_data.get('ref')  # e.g., 'refs/heads/main'
-        head_commit = event_data.get('head_commit', {})
-        message = head_commit.get('message')
+    # 2. Extract push-specific information
+    # These fields are standard in the 'push' event payload
+    pusher_name = event_data.get("pusher", {}).get("name")
+    ref = event_data.get("ref")  # e.g., 'refs/heads/main'
+    head_commit = event_data.get("head_commit", {})
+    message = head_commit.get("message")
+
+    print(pusher_name)
+    print(ref)
+    print(head_commit)
+    print(message)
 
     unique_id = str(uuid.uuid4())
 
-    print(webhook_url)
-    print(repo)
-    print(repo_url)
+    # author = push_details["head_commit"]["committer"]["name"]
+    # added_files = []
+    # removed_files = []
+    # updated_files = []
+    # commit_messages = []
 
-    author = push_details["head_commit"]["committer"]["name"]
-    added_files = []
-    removed_files = []
-    updated_files = []
-    commit_messages = []
+    # for commit in push_details["commits"]:
+    #     added_files += commit["added"]
+    #     updated_files += commit["modified"]
+    #     removed_files += commit["removed"]
+    #     commit_messages += f"Commit {commit['id']} - {commit['message']} \n"
 
-    for commit in push_details["commits"]:
-        added_files += commit["added"]
-        updated_files += commit["modified"]
-        removed_files += commit["removed"]
-        commit_messages += f"Commit {commit['id']} - {commit['message']} \n"
+    # added_files = set(added_files)
+    # removed_files = set(removed_files)
+    # updated_files = set(updated_files)
+    # commit_messages = set(commit_messages)
 
-    added_files = set(added_files)
-    removed_files = set(removed_files)
-    updated_files = set(updated_files)
-    commit_messages = set(commit_messages)
+    # body = ""
 
-    body = ""
+    # if added_files:
+    #     body += "\n" + f"{added_files}"
+    # if updated_files:
+    #     body += "\n" + f"{updated_files}"
+    # if removed_files:
+    #     body += "\n" + f"{removed_files}"
 
-    if added_files:
-        body += "\n" + f"{added_files}"
-    if updated_files:
-        body += "\n" + f"{updated_files}"
-    if removed_files:
-        body += "\n" + f"{removed_files}"
-
-    if commit_messages:
-        body += "\n" + f"{commit_messages}"
-
-    print(body)
+    # if commit_messages:
+    #     body += "\n" + f"{commit_messages}"
 
     cardV2 = {
         "cardsV2": [
             {
                 "cardId": unique_id,
                 "card": {
-                    "header": {
-                        "title": f"{author} pushed {len(push_details['commits'])} new commits"
-                    },
+                    "header": {"title": f"{'Zac'} pushed {'6'} new commits"},
                     "sections": [
                         {
                             "header": "Commit Message",
@@ -92,9 +89,7 @@ def run():
                                                     "materialIcon": {"name": "search"}
                                                 },
                                                 "onClick": {
-                                                    "openLink": {
-                                                        "url": f"{push_details['url']}"
-                                                    }
+                                                    "openLink": {"url": f"{'repo'}"}
                                                 },
                                             },
                                             {
@@ -128,7 +123,7 @@ def run():
         uri=webhook_url,
         method="POST",
         headers=message_headers,
-        body=dumps(cardV2),
+        body=json.dumps(cardV2),
     )
 
 
@@ -137,9 +132,5 @@ def run():
 
 
 if __name__ == "__main__":
-    print("test_1")
-    webhook_url = os.getenv("INPUT_WEBHOOK_URL")
-    push_details = os.getenv("INPUT_PUSH_DETAILS")
-    repo_url = os.getenv("INPUT_REPO_URL")
     run()
     # run("https://chat.googleapis.com/v1/spaces/AAQAcy2U53g/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=4Ft202foaB4qk-eCPBKhsCEVFU7iGuSp1jyNdT8Pk1U", push_details, "https://github.com/Zaclovespenguins/google-chat-notification/")
