@@ -46,6 +46,7 @@ def run():
                                     "textParagraph": {
                                         "text": f"{body}",
                                         "maxLines": 2,
+                                        "textSyntax": "MARKDOWN"
                                     }
                                 },
                                 {
