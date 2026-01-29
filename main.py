@@ -101,7 +101,7 @@ def run():
                                                 },
                                                 "onClick": {
                                                     "openLink": {
-                                                        "url": f"https://zaclovespenguins.github.io/google-chat-notification/?repo={repo_url}"
+                                                        "url": f"https://zaclovespenguins.github.io/google-chat-notification/?repo={"REPO"}"
                                                     }
                                                 },
                                             },
