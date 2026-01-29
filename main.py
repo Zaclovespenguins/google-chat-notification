@@ -45,7 +45,8 @@ def run():
     message = head_commit.get("message")
     message = head_commit.get("message")
 
-    print(commits)
+    for commit in commits:
+        print(commit)
     # print(pusher_name)
     # print(ref)
     # print(head_commit)
