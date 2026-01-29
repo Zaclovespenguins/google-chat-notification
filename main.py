@@ -20,16 +20,13 @@ def run():
     # Creating body based on number of commits
     if len(commits) == 1:
         title = f"""{name} pushed a new commit \n
-        
         """
     else:
-        title = f"""{name} pushed {len(commits)} new commits
-        
+        title = f"""{name} pushed {len(commits)} new commits \n
         """
 
     for commit in commits:
         body += f"""Commit {commit['id'][-7:]} - {commit['message']}
-        
         """
 
     commit_url = event_data.get("head_commit", {}).get("url")
