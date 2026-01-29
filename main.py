@@ -37,7 +37,7 @@ def run():
             {
                 "cardId": unique_id,
                 "card": {
-                    "header": {"title": f"{name} pushed {len(commits)} new commits"},
+                    "header": {"title": f"{title}",
                     "sections": [
                         {
                             "header": "Commit Message",
@@ -45,7 +45,7 @@ def run():
                             "widgets": [
                                 {
                                     "textParagraph": {
-                                        "text": "No commit message provided.",
+                                        "text": f"{body}",
                                         "maxLines": 2,
                                     }
                                 },
