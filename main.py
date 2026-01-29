@@ -10,6 +10,10 @@ def run():
     
     unique_id = str(uuid.uuid4())
 
+    print(webhook_url)
+    print(push_details)
+    print(repo_url)
+    
     author = push_details['head_commit']['committer']['name']
     added_files = []
     removed_files = []
@@ -26,9 +30,7 @@ def run():
     removed_files = set(removed_files)
     updated_files = set(updated_files)
     commit_messages = set(commit_messages)
-
-    print("TEST")
-
+    
     body = ""
 
     if added_files:
