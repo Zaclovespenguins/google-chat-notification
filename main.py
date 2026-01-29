@@ -44,11 +44,12 @@ def run():
     message = head_commit.get("message")
     commits = event_data.get('commits', [])
 
+    print(get_changed_files())
     print(commits)
-    print(pusher_name)
-    print(ref)
-    print(head_commit)
-    print(message)
+    # print(pusher_name)
+    # print(ref)
+    # print(head_commit)
+    # print(message)
 
     unique_id = str(uuid.uuid4())
 
