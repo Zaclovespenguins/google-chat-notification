@@ -12,7 +12,7 @@ def run():
         event_data = json.load(f)
 
     name = event_data.get("pusher", {}).get("name")
-    ref = event_data.get("ref")  # e.g., 'refs/heads/main'
+    ref = event_data.get("ref")
     commits = event_data.get("commits", {})
 
     body = ""
@@ -45,7 +45,7 @@ def run():
                                 {
                                     "textParagraph": {
                                         "text": f"{body}",
-                                        "maxLines": 2,
+                                        # "maxLines": 2,
                                     }
                                 },
                                 {
