@@ -24,7 +24,7 @@ def run():
         title = f"{name} pushed {len(commits)} new commits"
 
     for commit in commits:
-        body += f"Commit [{commit['id'][-7:]}]({commit_url}) - {commit['message']} \n"
+        body += f"Commit [{commit['id'][-7:]}]({commit['url']}) - {commit['message']} \n"
 
     commit_url = event_data.get("head_commit", {}).get("url")
     repo_url = commit_url.split("commit")[0]
@@ -93,12 +93,5 @@ def run():
         headers=message_headers,
         body=json.dumps(cardV2),
     )
-
-
-# [Open in GitHub Desktop](x-github-client://openRepo/https://github.com/Zaclovespenguins/google-chat-notification)
-# https://zaclovespenguins.github.io/?repo=https://github.com/Zaclovespenguins/google-chat-notification
-
-
 if __name__ == "__main__":
     run()
-    # run("https://chat.googleapis.com/v1/spaces/AAQAcy2U53g/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=4Ft202foaB4qk-eCPBKhsCEVFU7iGuSp1jyNdT8Pk1U", push_details, "https://github.com/Zaclovespenguins/google-chat-notification/")
