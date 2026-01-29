@@ -112,6 +112,7 @@ def run(webhook_url, push_details, updated_files, repo_url, commit_url, who_comm
 
 
 if __name__ == "__main__":
+    print("test_1")
     webhook_url = os.getenv("INPUT_WEBHOOK_URL")
     push_details = os.getenv("INPUT_PUSH_DETAILS")
     repo_url = os.getenv("INPUT_REPO_URL")
