@@ -28,7 +28,7 @@ def run():
     message = head_commit.get("message")
     commits = event_data.get('commits', [])
 
-    print(event_data['commits'])
+    print(commits)
     print(pusher_name)
     print(ref)
     print(head_commit)
