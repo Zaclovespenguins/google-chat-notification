@@ -21,10 +21,12 @@ def run():
     if len(commits) == 1:
         title = f"{name} pushed a new commit \n"
     else:
-        title = f"{name} pushed {len(commits)} new commits \n"
+        title = f"""{name} pushed {len(commits)} new commits
+        """
 
     for commit in commits:
-        body += f"Commit [{commit['id'][-7:]}]({commit['url']}) - {commit['message']} \n"
+        body += f"""Commit [{commit['id'][-7:]}]({commit['url']}) - {commit['message']}
+        """
 
     commit_url = event_data.get("head_commit", {}).get("url")
     repo_url = commit_url.split("commit")[0]
@@ -36,7 +38,7 @@ def run():
             {
                 "cardId": unique_id,
                 "card": {
-                    "header": {"title": f"**{title}**"},
+                    "header": {"title": f"{title}"},
                     "sections": [
                         {
                             "header": "Commit Message",
