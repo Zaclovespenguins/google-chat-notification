@@ -1,36 +1,55 @@
-from json import dumps
 import os
-from httplib2 import Http
 import uuid
+from json import dumps
+
+from github import Github
+from httplib2 import Http
+
 
 def run():
     webhook_url = os.getenv("INPUT_WEBHOOK_URL")
-    push_details = os.getenv("INPUT_PUSH_DETAILS")
-    repo_url = os.getenv("INPUT_REPO_URL")
-    
+    # push_details = os.getenv("INPUT_PUSH_DETAILS")
+    # repo_url = os.getenv("INPUT_REPO_URL")
+    # token = os.getenv("GITHUB_TOKEN")
+
+    # g = Github(token)
+    # repo_name = os.getenv("GITHUB_REPOSITORY")
+    # repo = g.get_repo(repo_name)
+
+    event_path = os.getenv('GITHUB_EVENT_PATH')
+        with open(event_path, 'r') as f:
+            event_data = json.load(f)
+
+        # 2. Extract push-specific information
+        # These fields are standard in the 'push' event payload
+        pusher_name = event_data.get('pusher', {}).get('name')
+        ref = event_data.get('ref')  # e.g., 'refs/heads/main'
+        head_commit = event_data.get('head_commit', {})
+        message = head_commit.get('message')
+
     unique_id = str(uuid.uuid4())
 
     print(webhook_url)
-    print(push_details)
+    print(repo)
     print(repo_url)
-    
-    author = push_details['head_commit']['committer']['name']
+
+    author = push_details["head_commit"]["committer"]["name"]
     added_files = []
     removed_files = []
     updated_files = []
     commit_messages = []
 
-    for commit in push_details['commits']:
-        added_files += commit['added']
-        updated_files += commit['modified']
-        removed_files += commit['removed']
+    for commit in push_details["commits"]:
+        added_files += commit["added"]
+        updated_files += commit["modified"]
+        removed_files += commit["removed"]
         commit_messages += f"Commit {commit['id']} - {commit['message']} \n"
 
     added_files = set(added_files)
     removed_files = set(removed_files)
     updated_files = set(updated_files)
     commit_messages = set(commit_messages)
-    
+
     body = ""
 
     if added_files:
@@ -46,62 +65,60 @@ def run():
     print(body)
 
     cardV2 = {
-      "cardsV2": [
-        {
-          "cardId": unique_id,
-          "card": {
-              "header": {
-                "title": f"{author} pushed {len(push_details['commits'])} new commits"
-              },
-              "sections": [
-                {
-                  "header": "Commit Message",
-                  "collapsible": "false",
-                  "widgets": [
-                    {
-                      "textParagraph": {
-                        "text": "No commit message provided.",
-                        "maxLines": 2
-                      }
+        "cardsV2": [
+            {
+                "cardId": unique_id,
+                "card": {
+                    "header": {
+                        "title": f"{author} pushed {len(push_details['commits'])} new commits"
                     },
-                    {
-                      "chipList": {
-                        "chips": [
-                          {
-                            "label": "View Commit on Github",
-                            "icon": {
-                              "materialIcon": {
-                                "name": "search"
-                              }
-                            },
-                            "onClick": {
-                              "openLink": {
-                                "url": f"{push_details['url']}"
-                              }
-                            }
-                          },
-                          {
-                            "label": "Open in Github Desktop",
-                            "icon": {
-                              "materialIcon": {
-                                "name": "open_in_new"
-                              }
-                            },
-                            "onClick": {
-                              "openLink": {
-                                "url": f"https://zaclovespenguins.github.io/google-chat-notification/?repo={repo_url}"
-                              }
-                            }
-                          }
-                        ]
-                      }
-                    }
-                  ]
-                }
-              ]
-          }
-        }
-      ]
+                    "sections": [
+                        {
+                            "header": "Commit Message",
+                            "collapsible": "false",
+                            "widgets": [
+                                {
+                                    "textParagraph": {
+                                        "text": "No commit message provided.",
+                                        "maxLines": 2,
+                                    }
+                                },
+                                {
+                                    "chipList": {
+                                        "chips": [
+                                            {
+                                                "label": "View Commit on Github",
+                                                "icon": {
+                                                    "materialIcon": {"name": "search"}
+                                                },
+                                                "onClick": {
+                                                    "openLink": {
+                                                        "url": f"{push_details['url']}"
+                                                    }
+                                                },
+                                            },
+                                            {
+                                                "label": "Open in Github Desktop",
+                                                "icon": {
+                                                    "materialIcon": {
+                                                        "name": "open_in_new"
+                                                    }
+                                                },
+                                                "onClick": {
+                                                    "openLink": {
+                                                        "url": f"https://zaclovespenguins.github.io/google-chat-notification/?repo={repo_url}"
+                                                    }
+                                                },
+                                            },
+                                        ]
+                                    }
+                                },
+                            ],
+                        }
+                    ],
+                },
+            }
+        ]
     }
 
     # update_files_string = ", ".join(updated_files)
@@ -113,6 +130,8 @@ def run():
         headers=message_headers,
         body=dumps(cardV2),
     )
+
+
 # [Open in GitHub Desktop](x-github-client://openRepo/https://github.com/Zaclovespenguins/google-chat-notification)
 # https://zaclovespenguins.github.io/?repo=https://github.com/Zaclovespenguins/google-chat-notification
 
