@@ -1,0 +1,23 @@
+name: "Github Notification"
+description: "Sends a notification to a Google Chat room"
+inputs:
+  webhook_url:
+    description: "The webhook for your Google Chat Space"
+  push_details:
+    description: "The commit github event"
+  repo_url:
+    description: "The URL of the repository"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Install Dependencies
+      run: pip install httplib2
+      shell: bash
+    - name: Run Script
+      run: python ${{ github.action_path }}/main.py
+      shell: bash
+      env:
+        INPUT_WEBHOOK_URL: ${{ inputs.webhook_url }}
+        INPUT_PUSH_DETAILS: ${{ inputs.push_details }}
+        INPUT_REPO_URL: ${{ inputs.repo_url }}
