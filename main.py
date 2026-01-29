@@ -120,5 +120,5 @@ if __name__ == "__main__":
     webhook_url = os.getenv("INPUT_WEBHOOK_URL")
     push_details = os.getenv("INPUT_PUSH_DETAILS")
     repo_url = os.getenv("INPUT_REPO_URL")
-    run(webhook_url, push_details, repo_url)
+    run()
     # run("https://chat.googleapis.com/v1/spaces/AAQAcy2U53g/messages?key=AIzaSyDdI0hCZtE6vySjMm-WEfRq3CPzqKqqsHI&token=4Ft202foaB4qk-eCPBKhsCEVFU7iGuSp1jyNdT8Pk1U", push_details, "https://github.com/Zaclovespenguins/google-chat-notification/")
